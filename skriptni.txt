@@ -1,0 +1,156 @@
+class Nastamba:
+    def __init__(self, broj, vrsta, ime=None, centralna_tocka=None, geometrijski_opis=None):
+        self.broj = broj
+        self.vrsta = vrsta
+        self.ime = ime
+        self.centralna_tocka = centralna_tocka
+        self.geometrijski_opis = geometrijski_opis
+        self.biljke = []
+        self.sekundarne_zivotinje = []
+        self.evidencija_prisutnosti = []
+        self.arhivirana = False
+
+    def dodaj_biljku(self, biljka):
+        self.biljke.append(biljka)
+
+    def dodaj_sekundarnu_zivotinju(self, zivotinja):
+        self.sekundarne_zivotinje.append(zivotinja)
+
+    def evidentiraj_prisutnost(self, zapis):
+        self.evidencija_prisutnosti.append(zapis)
+
+    def arhiviraj(self):
+        self.arhivirana = True
+
+    def __str__(self):
+        return f"Nastamba {self.broj}: {self.vrsta}, Ime: {self.ime}"
+
+
+class Zivotinja:
+    def __init__(self, vrsta, ime, id, broj):
+        self.vrsta = vrsta
+        self.ime = ime
+        self.id = id
+        self.broj = broj
+        self.porijeklo = None
+        self.datum_nastanka = None
+        self.arhivirana = False
+        self.nastamba = None
+        self.obaveze = []
+
+    def postavi_porijeklo(self, porijeklo, datum_nastanka):
+        self.porijeklo = porijeklo
+        self.datum_nastanka = datum_nastanka
+
+    def dodijeli_nastambu(self, nastamba):
+        self.nastamba = nastamba
+
+    def dodaj_obavezu(self, obaveza):
+        self.obaveze.append(obaveza)
+
+    def arhiviraj(self):
+        self.arhivirana = True
+
+    def __str__(self):
+        return f"Životinja {self.ime} ({self.vrsta}) - ID: {self.id}, Nastamba: {self.nastamba}"
+
+
+class Radnik:
+    def __init__(self, ime, prezime, kontakt, obrazovanje, sposobnosti):
+        self.ime = ime
+        self.prezime = prezime
+        self.kontakt = kontakt
+        self.obrazovanje = obrazovanje
+        self.sposobnosti = sposobnosti
+        self.godisnji_odmori = []
+        self.bolovanja = []
+        self.dostupnost = []
+        self.troskovi = 0
+
+    def dodaj_godisnji_odmor(self, godisnji_odmor):
+        self.godisnji_odmori.append(godisnji_odmor)
+
+    def dodaj_bolovanje(self, bolovanje):
+        self.bolovanja.append(bolovanje)
+
+    def dodaj_dostupnost(self, datum_dostupnosti):
+        self.dostupnost.append(datum_dostupnosti)
+
+    def __str__(self):
+        return f"Radnik: {self.ime} {self.prezime}, Kontakt: {self.kontakt}"
+
+
+class Trosak:
+    def __init__(self, zivotinja, trosak_materijala, trosak_radnika):
+        self.zivotinja = zivotinja
+        self.trosak_materijala = trosak_materijala
+        self.trosak_radnika = trosak_radnika
+        self.ukupni_trosak = trosak_materijala + trosak_radnika
+
+    def __str__(self):
+        return f"Trošak za {self.zivotinja.ime}: Trošak materijala: {self.trosak_materijala}, Trošak radnika: {self.trosak_radnika}, Ukupno: {self.ukupni_trosak}"
+
+
+class Posjeta:
+    def __init__(self, ime_grupe, vodic):
+        self.ime_grupe = ime_grupe
+        self.vodic = vodic
+        self.nezgode = []
+
+    def dodaj_nezgodu(self, nezgoda):
+        self.nezgode.append(nezgoda)
+
+    def __str__(self):
+        return f"Posjeta grupe {self.ime_grupe}, Vodic: {self.vodic}"
+
+
+class Nezgoda:
+    def __init__(self, vrsta, utjecaj, nastambe, zivotinje, komentari, trosak_sanacije):
+        self.vrsta = vrsta
+        self.utjecaj = utjecaj
+        self.nastambe = nastambe
+        self.zivotinje = zivotinje
+        self.komentari = komentari
+        self.trosak_sanacije = trosak_sanacije
+
+    def __str__(self):
+        return f"Nezgoda: {self.vrsta}, Utjecaj: {self.utjecaj}, Trošak sanacije: {self.trosak_sanacije}"
+
+
+# Primjer korištenja
+# Kreiranje nastambi
+nastamba1 = Nastamba(1, "Mračna", "Pećinska nastamba")
+nastamba2 = Nastamba(2, "Grijana", "Tropska kuća")
+
+# Kreiranje životinja
+zivotinja1 = Zivotinja("Panthera leo", "Leo", "A001", 1)
+zivotinja1.postavi_porijeklo("Rođenje u ZOO-u", "2020-05-05")
+zivotinja1.dodijeli_nastambu(nastamba1)
+
+# Kreiranje radnika
+radnik1 = Radnik("Ivan", "Horvat", "ivan.horvat@zoo.hr", "Veterinar", ["Hranjenje", "Medicinska skrb"])
+
+# Kreiranje troškova
+trosak1 = Trosak(zivotinja1, 200, 50)
+
+# Kreiranje posjeta
+posjeta1 = Posjeta("Školski izlet", radnik1)
+
+# Kreiranje nezgoda
+nezgoda1 = Nezgoda("Manja ozljeda", "Niska", [nastamba1], [zivotinja1], "Životinja ozlijeđena tijekom hranjenja", 100)
+
+# Dodavanje zapisa i obaveza
+nastamba1.evidentiraj_prisutnost("Dnevna provjera obavljena.")
+zivotinja1.dodaj_obavezu("Hranjenje - Dnevno")
+
+# Arhiviranje podataka
+zivotinja1.arhiviraj()
+nastamba1.arhiviraj()
+
+# Ispis
+print(nastamba1)
+print(zivotinja1)
+print(radnik1)
+print(trosak1)
+print(posjeta1)
+print(nezgoda1)
